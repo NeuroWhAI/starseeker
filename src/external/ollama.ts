@@ -23,4 +23,12 @@ export class OllamaClient {
     });
     return res.embeddings[0];
   }
+
+  async embedMany(texts: string[]): Promise<number[][]> {
+    const res = await this.ollama.embed({
+      model: this.options.embedModel,
+      input: texts,
+    });
+    return res.embeddings;
+  }
 }

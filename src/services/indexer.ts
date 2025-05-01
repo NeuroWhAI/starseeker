@@ -26,6 +26,9 @@ export class Indexer {
 
     logger.info('Indexing starred repositories...');
 
+    const batchSize = 4;
+    const batch: { repo: string; description: string; hash: string }[] = [];
+
     let count = 0;
     for await (const repo of github.listStarredRepos()) {
       const { full_name, description } = repo;
@@ -34,10 +37,17 @@ export class Indexer {
         if ((await this.db.countByHash(hash)) === 0) {
           logger.log(` - ${full_name}`);
 
-          const document = `${full_name}:\n${description}`;
-          const embedding = await ollama.embed(document);
+          batch.push({ repo: full_name, description, hash });
+          if (batch.length >= batchSize) {
+            const documents = batch.map((item) => `${item.repo}:\n${item.description}`);
+            const embeddings = await ollama.embedMany(documents);
 
-          await this.db.add(full_name, embedding, document, hash);
+            for (let i = 0; i < batch.length; i++) {
+              const { repo, description, hash } = batch[i];
+              await this.db.add(repo, embeddings[i], description, hash);
+            }
+            batch.length = 0;
+          }
         } else {
           logger.log(` - ${full_name} (already indexed)`);
         }
@@ -45,6 +55,16 @@ export class Indexer {
         count += 1;
       } else {
         logger.warn(`No description for repository: ${full_name}`);
+      }
+    }
+
+    if (batch.length > 0) {
+      const documents = batch.map((item) => `${item.repo}:\n${item.description}`);
+      const embeddings = await ollama.embedMany(documents);
+
+      for (let i = 0; i < batch.length; i++) {
+        const { repo, description, hash } = batch[i];
+        await this.db.add(repo, embeddings[i], description, hash);
       }
     }
 
