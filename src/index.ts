@@ -1,9 +1,9 @@
 import { Command } from 'commander';
 import { config } from './config';
-import { GitHubClient } from './external/github';
 import { logger } from './logger';
 import { ServiceError } from './services/error';
 import { Indexer } from './services/indexer';
+import { Seeker } from './services/seeker';
 
 const program = new Command()
   .name('starseeker')
@@ -112,6 +112,26 @@ program
     const indexer = new Indexer();
     try {
       await indexer.index();
+    } catch (error) {
+      if (error instanceof ServiceError) {
+        logger.error(error.message);
+      } else if (error instanceof Error) {
+        logger.error('An error occurred:', error);
+      } else {
+        logger.error(`An unexpected error occurred: ${JSON.stringify(error)}`);
+      }
+    }
+  });
+
+program
+  .command('search')
+  .description('Search indexed repositories')
+  .argument('<query...>', 'Search query')
+  .option('-k, --k <number>', 'Number of results to return', '5')
+  .action(async (query: string[], options) => {
+    const seeker = new Seeker();
+    try {
+      await seeker.search(query.join(' '), options.k ? Number.parseInt(options.k, 10) : undefined);
     } catch (error) {
       if (error instanceof ServiceError) {
         logger.error(error.message);
