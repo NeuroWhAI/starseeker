@@ -1,0 +1,60 @@
+{
+  "name": "starseeker",
+  "version": "0.1.0",
+  "description": "CLI tool to search starred GitHub repositories in natural language.",
+  "author": "NeuroWhAI",
+  "repository": "NeuroWhAI/starseeker",
+  "license": "MIT",
+  "private": false,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "starseeker": "bin/index.js"
+  },
+  "files": ["dist", "bin", "README.md", "package.json"],
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --clear-screen=false src/index.ts",
+    "build": "tsup --format esm",
+    "start": "node dist/index.js",
+    "clean": "rimraf dist coverage",
+    "lint": "biome check src/",
+    "lint:fix": "biome check src/ --fix",
+    "format": "biome format src/",
+    "test": "vitest run",
+    "prepare": "husky"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/cors": "^2.8.17",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.2",
+    "rimraf": "^6.0.0",
+    "tsup": "^8.0.2",
+    "tsx": "^4.7.2",
+    "typescript": "^5.4.4",
+    "vite-tsconfig-paths": "^5.0.0",
+    "vitest": "^3.0.0"
+  },
+  "lint-staged": {
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,json,jsonc}": ["biome check --fix --no-errors-on-unmatched"]
+  },
+  "tsup": {
+    "entry": ["src", "!src/**/__tests__/**", "!src/**/*.test.*"],
+    "splitting": false,
+    "sourcemap": true,
+    "clean": true,
+    "dts": true,
+    "minify": true
+  },
+  "keywords": [
+    "github",
+    "cli",
+    "stargazer",
+    "search",
+    "natural-language",
+    "ollama"
+  ]
+}
