@@ -9,13 +9,14 @@ export class GitHubClient {
 
   async *listStarredRepos() {
     let page = 1;
-    const perPage = 30;
+    const perPage = 100;
 
     while (true) {
       const res = await this.github.request('GET /user/starred', {
         'X-GitHub-Api-Version': '2022-11-28',
         per_page: perPage,
         page: page,
+        sort: 'updated',
       });
 
       if (res.status !== 200) {
@@ -26,7 +27,7 @@ export class GitHubClient {
         yield repo;
       }
 
-      if (res.data.length < perPage) {
+      if (res.data.length === 0) {
         break;
       }
 
