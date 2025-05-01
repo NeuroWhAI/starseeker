@@ -1,14 +1,33 @@
-// logger.info(`Starting up in ${env.NODE_ENV} mode`);
+import { Command } from 'commander';
+import { config } from './config';
+import { logger } from './logger';
 
-const onCloseSignal = () => {
-  // logger.info('sigint received, shutting down');
+const program = new Command()
+  .name('starseeker')
+  .description('CLI tool to search starred GitHub repositories in natural language');
 
-  setTimeout(() => process.exit(1), 10000).unref(); // Force shutdown after timeout
+const configCmd = program.command('config');
+const configSetCmd = configCmd.command('set');
+const configGetCmd = configCmd.command('get');
 
-  // Do some cleanup here
+configSetCmd
+  .command('pat')
+  .description('Set the GitHub Personal Access Token (PAT)')
+  .argument('<pat>', 'GitHub Personal Access Token')
+  .action((pat: string) => {
+    config.pat = pat;
+    logger.info('GitHub Personal Access Token set successfully.');
+  });
+configGetCmd
+  .command('pat')
+  .description('Get the GitHub Personal Access Token (PAT)')
+  .action(() => {
+    const pat = config.pat;
+    if (pat) {
+      logger.info(`GitHub Personal Access Token: ${pat}`);
+    } else {
+      logger.warn('GitHub Personal Access Token not set.');
+    }
+  });
 
-  process.exit(0); // Exit gracefully
-};
-
-process.on('SIGINT', onCloseSignal);
-process.on('SIGTERM', onCloseSignal);
+program.parse(process.argv);

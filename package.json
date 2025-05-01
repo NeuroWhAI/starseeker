@@ -12,6 +12,7 @@
     "starseeker": "bin/index.js"
   },
   "files": ["dist", "bin", "README.md", "package.json"],
+
   "type": "module",
   "scripts": {
     "dev": "tsx watch --clear-screen=false src/index.ts",
@@ -25,9 +26,13 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "chalk": "^5.4.1",
+    "commander": "^13.1.0",
+    "conf": "^13.1.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
+    "@types/conf": "^2.1.0",
     "@types/cors": "^2.8.17",
     "husky": "^9.1.7",
     "lint-staged": "^15.2.2",
@@ -49,12 +54,5 @@
     "dts": true,
     "minify": true
   },
-  "keywords": [
-    "github",
-    "cli",
-    "stargazer",
-    "search",
-    "natural-language",
-    "ollama"
-  ]
+  "keywords": ["github", "cli", "stargazer", "search", "natural-language", "ollama"]
 }
