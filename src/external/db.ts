@@ -63,4 +63,11 @@ export class Database {
       text: r.item.metadata.text as string,
     }));
   }
+
+  async clear() {
+    if (!(await this.db.isIndexCreated())) {
+      return;
+    }
+    await this.db.deleteIndex();
+  }
 }

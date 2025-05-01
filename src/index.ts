@@ -1,5 +1,6 @@
 import { Command } from 'commander';
 import { config } from './config';
+import { Database } from './external/db';
 import { logger } from './logger';
 import { ServiceError } from './services/error';
 import { Indexer } from './services/indexer';
@@ -105,6 +106,30 @@ embedConfigGetCmd
     }
   });
 
+// Database Command
+const dbCmd = program.command('db').description('Database commands');
+
+// Database Clear Command
+dbCmd
+  .command('clear')
+  .description('Clear the database')
+  .action(async () => {
+    const db = Database.getInstance();
+    try {
+      await db.clear();
+      logger.info('Database cleared successfully.');
+    } catch (error) {
+      if (error instanceof ServiceError) {
+        logger.error(error.message);
+      } else if (error instanceof Error) {
+        logger.error('An error occurred:', error);
+      } else {
+        logger.error(`An unexpected error occurred: ${JSON.stringify(error)}`);
+      }
+    }
+  });
+
+// Indexer Command
 program
   .command('index')
   .description('Index starred repositories')
@@ -123,6 +148,7 @@ program
     }
   });
 
+// Search Command
 program
   .command('search')
   .description('Search indexed repositories')
