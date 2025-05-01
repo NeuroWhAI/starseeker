@@ -2,6 +2,8 @@
 
 StarSeeker is a CLI tool to search your starred GitHub repositories using natural language.
 
+![demo](./docs/demo.png)
+
 ## Features
 
 - Index your starred GitHub repositories via the GitHub API
@@ -26,6 +28,8 @@ Before using StarSeeker, you need to set up a few configurations:
 # https://github.com/settings/personal-access-tokens
 starseeker config set pat <your-github-pat>
 ```
+
+![pat](./docs/pat.png)
 
 #### Ollama Configuration (Optional)
 
