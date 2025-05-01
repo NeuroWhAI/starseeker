@@ -12,7 +12,6 @@
     "starseeker": "bin/index.js"
   },
   "files": ["dist", "bin", "README.md", "package.json"],
-
   "type": "module",
   "scripts": {
     "dev": "tsx watch --clear-screen=false src/index.ts",
@@ -26,9 +25,12 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@octokit/core": "^6.1.5",
     "chalk": "^5.4.1",
     "commander": "^13.1.0",
-    "conf": "^13.1.0"
+    "conf": "^13.1.0",
+    "ollama": "^0.5.15",
+    "vectra": "^0.9.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

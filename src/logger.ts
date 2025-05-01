@@ -11,7 +11,6 @@ export class Logger {
 
   warn(message: string) {
     console.log(`${chalk.bgYellow.black(' WARN ')} ${message}`);
-    console.log();
   }
 
   error(message: string, error?: Error) {
@@ -19,7 +18,6 @@ export class Logger {
     if (error) {
       console.error(error.stack || error.message || error);
     }
-    console.log();
   }
 }
 
