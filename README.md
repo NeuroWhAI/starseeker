@@ -44,6 +44,7 @@ starseeker config set ollama key <ollama-api-key>
 #### Embedding Model Configuration (Required)
 
 ```bash
+# First install Ollama and download an embedding model you want
 starseeker config set embed model <embedding-model-name>
 ```
 
@@ -68,6 +69,7 @@ starseeker config get embed model
 Index your starred GitHub repositories:
 
 ```bash
+# This may take a while, and you can interrupt(Ctrl+C) it along the way.
 starseeker index
 ```
 
@@ -81,6 +83,12 @@ starseeker search image processing library
 
 # Specify number of results
 starseeker search TypeScript ORM with PostgreSQL support --k 10
+```
+
+### Clear Indexed Repositories
+
+```bash
+starseeker db clear
 ```
 
 ## Requirements
