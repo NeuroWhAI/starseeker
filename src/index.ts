@@ -4,6 +4,7 @@ import { Database } from './external/db';
 import { logger } from './logger';
 import { ServiceError } from './services/error';
 import { Indexer } from './services/indexer';
+import { Init } from './services/init';
 import { Seeker } from './services/seeker';
 
 const program = new Command()
@@ -118,6 +119,25 @@ dbCmd
     try {
       await db.clear();
       logger.info('Database cleared successfully.');
+    } catch (error) {
+      if (error instanceof ServiceError) {
+        logger.error(error.message);
+      } else if (error instanceof Error) {
+        logger.error('An error occurred:', error);
+      } else {
+        logger.error(`An unexpected error occurred: ${JSON.stringify(error)}`);
+      }
+    }
+  });
+
+// Init Command
+program
+  .command('init')
+  .description('Initialize the configuration')
+  .action(async () => {
+    const init = new Init();
+    try {
+      await init.init();
     } catch (error) {
       if (error instanceof ServiceError) {
         logger.error(error.message);
