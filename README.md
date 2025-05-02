@@ -76,7 +76,7 @@ Index your starred GitHub repositories:
 
 ```bash
 # This may take a while, and you can interrupt(Ctrl+C) it along the way.
-starseeker index
+starseeker index --batch 4
 ```
 
 ### Searching Repositories
