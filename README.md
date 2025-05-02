@@ -22,6 +22,12 @@ npm install -g starseeker
 
 Before using StarSeeker, you need to set up a few configurations:
 
+```bash
+starseeker init
+```
+
+To make each setting yourself, see the following.
+
 #### Set GitHub Personal Access Token (Required)
 
 ```bash
