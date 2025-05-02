@@ -133,10 +133,12 @@ dbCmd
 program
   .command('index')
   .description('Index starred repositories')
-  .action(async () => {
+  .option('-b, --batch <number>', 'Batch size for indexing', '4')
+  .action(async (options) => {
     const indexer = new Indexer();
     try {
-      await indexer.index();
+      const batchSize = options.batch ? Number.parseInt(options.batch, 10) : undefined;
+      await indexer.index(batchSize || 4);
     } catch (error) {
       if (error instanceof ServiceError) {
         logger.error(error.message);

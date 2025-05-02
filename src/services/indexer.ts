@@ -9,7 +9,10 @@ import { ServiceError } from './error';
 export class Indexer {
   private readonly db: Database = Database.getInstance();
 
-  async index(): Promise<void> {
+  async index(batchSize: number): Promise<void> {
+    if (batchSize <= 0) {
+      throw new ServiceError('Batch size must be greater than 0.');
+    }
     if (!config.pat) {
       throw new ServiceError('GitHub PAT is not set. Please set it in the config.');
     }
@@ -26,7 +29,6 @@ export class Indexer {
 
     logger.info('Indexing starred repositories...');
 
-    const batchSize = 4;
     const batch: { repo: string; document: string; hash: string }[] = [];
 
     let count = 0;
