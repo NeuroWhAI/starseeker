@@ -1,6 +1,6 @@
 {
   "name": "starseeker",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "CLI tool to search starred GitHub repositories in natural language.",
   "author": "NeuroWhAI",
   "repository": "NeuroWhAI/starseeker",
